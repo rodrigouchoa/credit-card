@@ -1,0 +1,23 @@
+<div>
+	<h3>List Credit Card</h3>
+	<div class="container">
+		<table class="table table-striped" ng-show="listCtrl.creditCards.length">
+			<thead>
+      			<tr>
+        			<th>Number</th>
+        			<th>Name</th>
+        			<th>Limit</th>
+        			<th>Balance</th>
+      			</tr>
+    		</thead>
+    		<tbody>
+    			<tr ng-repeat="cc in listCtrl.creditCards">
+    				<td>{{cc.number}}</td>
+    				<td>{{cc.name}}</td>
+    				<td>{{cc.limit | currency:"£"}}</td>
+    				<td>{{cc.balance | currency:"£"}}</td>
+    			</tr>
+    		</tbody>
+		</table>
+	</div>
+</div>

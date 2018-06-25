@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<title>Credit Card App</title>
+	</head>
+	<body>
+		<h2>Menu</h2>
+		<div class="home-section">
+		    <ul class="menu-list">
+		        <li><a href="#/creditcard">List Credit Cards</a></li>
+		        <li><a href="#/creditcard/add">Add Credit Card</a></li>
+		    </ul>
+		</div>
+		<div ng-view></div>
+		<script src="/webjars/angularjs/1.4.9/angular.js"></script>
+		<script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
+		<script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
+		<script src="/app/app-module.js"></script>
+		<script src="/app/app-config.js"></script>
+		<script src="/app/creditcard/CreditCardListCtrl.js"></script>
+		<script src="/app/creditcard/CreditCardAddCtrl.js"></script>
+		<script src="/app/domain/CreditCard.js"></script>
+		<script src="/app/util/ModelTransformer.js"></script>
+		<link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
+	</body>
+</html>
