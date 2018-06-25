@@ -36,11 +36,14 @@ public class CreditCardServiceTest {
 	@MockBean
 	private CreditCardRepository ccRepository;
 	
+	private static final String BASE_URL = "/api/creditcard";
+	
 	@MockBean
 	private Utils utils;
 	
     private ParameterizedTypeReference<List<CreditCard>> listType = new ParameterizedTypeReference<List<CreditCard>>(){};
 	
+    
 	@Test
 	public void findAll_shouldReturnAllCreditCards() {
 		CreditCard cc1 = new CreditCard(300L, "111111", "Test 1", new BigDecimal("300"));
@@ -51,7 +54,7 @@ public class CreditCardServiceTest {
 		expected.add(cc2);
 		
 		when(ccRepository.findAll()).thenReturn(expected);
-		ResponseEntity<List<CreditCard>> respEntity = restTemplate.exchange("/creditcard", HttpMethod.GET, null, listType);
+		ResponseEntity<List<CreditCard>> respEntity = restTemplate.exchange(BASE_URL, HttpMethod.GET, null, listType);
 		
 		assertTrue(respEntity.getStatusCode().equals(HttpStatus.OK));
 		assertTrue(respEntity.getBody().size() == 2);
@@ -64,7 +67,7 @@ public class CreditCardServiceTest {
 		
 		when(utils.validateCreditCardNumber(cc.getNumber())).thenReturn(true);
 		when(ccRepository.persist(cc)).thenReturn(expected);
-		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity("/creditcard", cc, CreditCard.class);
+		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity(BASE_URL, cc, CreditCard.class);
 		
 		assertTrue(respEntity.getStatusCode().equals(HttpStatus.CREATED));
 		assertTrue(respEntity.getHeaders().getLocation() != null);
@@ -77,7 +80,7 @@ public class CreditCardServiceTest {
 		
 		when(utils.validateCreditCardNumber(cc.getNumber())).thenReturn(true);
 		when(ccRepository.persist(cc)).thenThrow(ex);
-		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity("/creditcard", cc, CreditCard.class);
+		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity(BASE_URL, cc, CreditCard.class);
 		
 		assertTrue(respEntity.getStatusCode().equals(HttpStatus.CONFLICT));
 	}
@@ -89,7 +92,7 @@ public class CreditCardServiceTest {
 		
 		
 		when(utils.validateCreditCardNumber(cc.getNumber())).thenThrow(ex);
-		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity("/creditcard", cc, CreditCard.class);
+		ResponseEntity<CreditCard> respEntity = restTemplate.postForEntity(BASE_URL, cc, CreditCard.class);
 		
 		assertTrue(respEntity.getStatusCode().equals(HttpStatus.UNPROCESSABLE_ENTITY));
 	}
