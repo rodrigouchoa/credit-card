@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.rodrigouchoa.creditcard.domain.CreditCard;
 import com.rodrigouchoa.creditcard.exception.CreditCardAlreadyExistsException;
-import com.rodrigouchoa.creditcard.exception.CreditCardNumberInvalidException;
+import com.rodrigouchoa.creditcard.exception.CreditCardValidationException;
 import com.rodrigouchoa.creditcard.repository.CreditCardRepository;
 import com.rodrigouchoa.creditcard.util.Utils;
 
@@ -88,7 +88,7 @@ public class CreditCardServiceTest {
 	@Test
 	public void persist_shouldThrowExceptionWhenNumberNotValid() {
 		CreditCard cc = new CreditCard("4655189516287871", "Michael Jordan", new BigDecimal("100"));
-		CreditCardNumberInvalidException ex = new CreditCardNumberInvalidException("Number Invalid");
+		CreditCardValidationException ex = new CreditCardValidationException("Number Invalid");
 		
 		
 		when(utils.validateCreditCardNumber(cc.getNumber())).thenThrow(ex);
@@ -96,5 +96,4 @@ public class CreditCardServiceTest {
 		
 		assertTrue(respEntity.getStatusCode().equals(HttpStatus.UNPROCESSABLE_ENTITY));
 	}
-
 }

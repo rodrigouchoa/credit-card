@@ -13,13 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.rodrigouchoa.creditcard.exception.CreditCardAlreadyExistsException;
-import com.rodrigouchoa.creditcard.exception.CreditCardNumberInvalidException;
+import com.rodrigouchoa.creditcard.exception.CreditCardException;
+import com.rodrigouchoa.creditcard.exception.CreditCardValidationException;
 
-public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
-	Logger logger = LoggerFactory.getLogger(RuntimeExceptionMapper.class);
+public class CreditCardExceptionMapper implements ExceptionMapper<CreditCardException> {
+	Logger logger = LoggerFactory.getLogger(CreditCardExceptionMapper.class);
 
 	@Override
-	public Response toResponse(RuntimeException exception) {
+	public Response toResponse(CreditCardException exception) {
 		/* Leaving this here for now but maybe it should done someplace else,
 		 * since not all exceptions here will be an error */
 		logger.error(exception.getMessage(), exception);
@@ -28,7 +29,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
 		if (exception instanceof CreditCardAlreadyExistsException) {
 			httpCode = 409;
 		}
-		if (exception instanceof CreditCardNumberInvalidException) {
+		if (exception instanceof CreditCardValidationException) {
 			httpCode = 422;
 		}
 		

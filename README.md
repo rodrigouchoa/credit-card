@@ -29,4 +29,6 @@ curl -X "POST" "http://localhost:8080/api/creditcard" \
 }'
 ```
 
-**This is still under construction, only the list page is available. To add credit cards use the api.** 
+## Final Considerations
+- Loads could be improved if there was more time.
+- Luhn 10 validation is only done on the server side.

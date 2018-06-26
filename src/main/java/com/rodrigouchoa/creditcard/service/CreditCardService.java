@@ -13,9 +13,10 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.rodrigouchoa.creditcard.domain.CreditCard;
-import com.rodrigouchoa.creditcard.exception.CreditCardNumberInvalidException;
+import com.rodrigouchoa.creditcard.exception.CreditCardValidationException;
 import com.rodrigouchoa.creditcard.repository.CreditCardRepository;
 import com.rodrigouchoa.creditcard.util.Utils;
 
@@ -50,11 +51,27 @@ public class CreditCardService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
 	public Response persist(CreditCard creditCard) {
-		boolean isNumberValid = utils.validateCreditCardNumber(creditCard.getNumber());
-		if (!isNumberValid) {
-			throw new CreditCardNumberInvalidException("The credit card number " + creditCard.getNumber() + " is invalid.");
-		}
+		validate(creditCard);
+		
 		CreditCard persisted = repository.persist(creditCard);
 		return Response.created(URI.create("/" + persisted.getId())).entity(persisted).build();
+	}
+	
+	private void validate(CreditCard cc) {
+		if (cc == null) {
+			throw new CreditCardValidationException("Credit Card cannot be null.");
+		}
+		if (StringUtils.isEmpty(cc.getNumber())) {
+			throw new CreditCardValidationException("Credit card number is required.");
+		}
+		if (StringUtils.isEmpty(cc.getName())) {
+			throw new CreditCardValidationException("The name is required.");
+		}
+		if (cc.getLimit() == null) {
+			throw new CreditCardValidationException("The limit is rquired");
+		}
+		if (!utils.validateCreditCardNumber(cc.getNumber())) {
+			throw new CreditCardValidationException("The credit card number " + cc.getNumber() + " is invalid.");
+		}
 	}
 }
